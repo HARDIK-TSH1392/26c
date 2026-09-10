@@ -7,6 +7,101 @@ html {
 }
 
 body {
-  background-color: #f7f5f2;
+  background-color: #f5f7f0;
   color: #141414;
+  /* Quiet, site-wide green tint + a barely-visible tiled leaf doodle
+     watermark — a wink at 4:20 that's there if you look, invisible if you
+     don't. */
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%20viewBox='0%200%20160%20160'%3E%3Cpath%20d='M46%20126c-11-27-4-63%2041-74%209%2031-2%2065-36%2079-6%202-9-1-5-5Z'%20fill='none'%20stroke='%2315803d'%20stroke-width='2.5'%20opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  background-attachment: fixed;
+}
+
+/* Green Leaves Sale — shared decorative animations (used by GreenLeavesField
+   and MushroomDoodle, on the homepage and on product pages). */
+@keyframes gl-wind {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateX(var(--drift, 14px)) translateY(-6px) rotate(calc(var(--rot, 0deg) + 18deg)); }
+}
+@keyframes gl-burn-drift {
+  0% { transform: translateY(0) rotate(var(--rot, 0deg)) scale(1); }
+  30% { transform: translateY(-3px) rotate(calc(var(--rot, 0deg) - 6deg)) scale(0.94); }
+  55% { transform: translateY(-1px) rotate(calc(var(--rot, 0deg) + 5deg)) scale(1.03); }
+  80% { transform: translateY(-4px) rotate(calc(var(--rot, 0deg) - 4deg)) scale(0.9); }
+  100% { transform: translateY(0) rotate(var(--rot, 0deg)) scale(1); }
+}
+@keyframes gl-ember-glow {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 0.85; transform: scale(1.25); }
+}
+@keyframes gl-neon {
+  0% { color: #39ff14; filter: drop-shadow(0 0 7px #39ff14); }
+  20% { color: #00e5ff; filter: drop-shadow(0 0 7px #00e5ff); }
+  40% { color: #ff00ff; filter: drop-shadow(0 0 7px #ff00ff); }
+  60% { color: #fff700; filter: drop-shadow(0 0 7px #fff700); }
+  80% { color: #7cff00; filter: drop-shadow(0 0 7px #7cff00); }
+  100% { color: #39ff14; filter: drop-shadow(0 0 7px #39ff14); }
+}
+@keyframes gl-neon-burn {
+  0% { color: #ff5a00; filter: drop-shadow(0 0 10px #ff2200) drop-shadow(0 0 18px #ff6a00); }
+  15% { color: #ff2200; filter: drop-shadow(0 0 12px #ff0000) drop-shadow(0 0 20px #ff4400); }
+  32% { color: #ffb800; filter: drop-shadow(0 0 10px #ff8800) drop-shadow(0 0 16px #ffcc00); }
+  50% { color: #ff2d95; filter: drop-shadow(0 0 12px #ff2d95) drop-shadow(0 0 18px #ff00c8); }
+  65% { color: #ff5a00; filter: drop-shadow(0 0 10px #ff2200) drop-shadow(0 0 18px #ff6a00); }
+  82% { color: #ffe600; filter: drop-shadow(0 0 10px #ff9900) drop-shadow(0 0 16px #ffcc00); }
+  100% { color: #ff5a00; filter: drop-shadow(0 0 10px #ff2200) drop-shadow(0 0 18px #ff6a00); }
+}
+/* Color-only variants — no drop-shadow. Used on the mushroom's tiny inner
+   parts (spots etc): a CSS drop-shadow filter on a sub-pixel-scale shape
+   gets hard-clipped at its filter region edge, which renders as a visible
+   square box around the shape. Keeping the glow filter only on elements
+   with a large-enough bounding box (the whole leaf, the whole mushroom)
+   avoids that clipping entirely. */
+@keyframes gl-neon-solid {
+  0% { color: #39ff14; }
+  20% { color: #00e5ff; }
+  40% { color: #ff00ff; }
+  60% { color: #fff700; }
+  80% { color: #7cff00; }
+  100% { color: #39ff14; }
+}
+@keyframes gl-neon-burn-solid {
+  0% { color: #ff5a00; }
+  15% { color: #ff2200; }
+  32% { color: #ffb800; }
+  50% { color: #ff2d95; }
+  65% { color: #ff5a00; }
+  82% { color: #ffe600; }
+  100% { color: #ff5a00; }
+}
+@keyframes gl-smoke {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.45); }
+  15% { opacity: 0.6; }
+  45% { opacity: 0.4; transform: translate(6px, -50px) scale(1.3); }
+  100% { opacity: 0; transform: translate(14px, -110px) scale(2.2); }
+}
+/* A leaf blown by the wind — moves strictly right to left (never reverses),
+   speeding up and slowing down unevenly to read as gusts, then fades out
+   just before looping back to its start point off to the right so the
+   reset is invisible instead of a visible snap-back. */
+@keyframes gl-gust {
+  0% { transform: translateX(46px) rotate(var(--rot, 0deg)); opacity: 0; }
+  6% { opacity: 0.8; }
+  30% { transform: translateX(-10px) rotate(calc(var(--rot, 0deg) - 8deg)); }
+  55% { transform: translateX(-55px) rotate(calc(var(--rot, 0deg) - 18deg)); }
+  70% { transform: translateX(-70px) rotate(calc(var(--rot, 0deg) - 22deg)); }
+  92% { opacity: 0.8; }
+  100% { transform: translateX(-130px) rotate(calc(var(--rot, 0deg) - 30deg)); opacity: 0; }
+}
+/* One-shot: click a leaf and it quickly catches, flares up, then slowly
+   burns down to a dim, still-visible smoldering ember — plays once and
+   holds that end state (animation-fill-mode: forwards). */
+@keyframes gl-catch-fire {
+  0% { color: #39ff14; filter: drop-shadow(0 0 6px #39ff14); }
+  8% { color: #ffe600; filter: drop-shadow(0 0 12px #ff9900); }
+  20% { color: #ff7a00; filter: drop-shadow(0 0 14px #ff3d00); }
+  40% { color: #ff2200; filter: drop-shadow(0 0 16px #ff0000); }
+  70% { color: #ff5500; filter: drop-shadow(0 0 10px #cc2200); }
+  100% { color: #d9480f; filter: drop-shadow(0 0 6px #7a1e00); }
 }

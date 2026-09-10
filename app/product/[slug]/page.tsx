@@ -4,6 +4,8 @@ import ProductDetail from "@/components/ProductDetail";
 import ProductCard from "@/components/ProductCard";
 import { getStockMap } from "@/lib/stock";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductPage({
   params,
 }: {

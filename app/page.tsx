@@ -3,32 +3,17 @@ import { products } from "@/data/products";
 import { upcomingDesigns } from "@/data/upcoming";
 import ShopGrid from "@/components/ShopGrid";
 import ComingSoonCard from "@/components/ComingSoonCard";
-import HeroCarousel from "@/components/HeroCarousel";
+import HomeHero from "@/components/HomeHero";
 import { getStockMap } from "@/lib/stock";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const stockMap = await getStockMap();
 
   return (
     <main>
-      <section className="relative bg-ink text-paper overflow-hidden">
-        <HeroCarousel />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-ink/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-6 py-14 md:py-20">
-          <p className="uppercase tracking-[0.3em] text-xs text-paper/60 mb-4">
-            26c Graphic Tees
-          </p>
-          <h1 className="text-4xl md:text-6xl font-black leading-[0.95] max-w-2xl">
-            Hand-drawn prints.
-            <br />
-            Oversized fits.
-          </h1>
-          <p className="mt-5 max-w-md text-paper/70 text-sm md:text-base">
-            100% cotton, small-batch printed tees. Six drops, live now.
-          </p>
-        </div>
-      </section>
+      <HomeHero />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
         <div className="flex items-baseline justify-between mb-1">

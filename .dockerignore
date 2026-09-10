@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+*.md
+.env.local
+.env.local.example
+prisma/dev.db
+prisma/dev.db-journal
+.agents
+.claude
+.windsurf
+skills-lock.json

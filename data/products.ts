@@ -22,13 +22,15 @@ export type Product = {
   };
 };
 
+const GCS_BASE = "https://storage.googleapis.com/nh-26c-ecommerce-products/web/products";
+
 const img = (slug: string) => ({
-  flat: `/products/${slug}/flat.webp`,
-  closeup: `/products/${slug}/closeup.webp`,
-  front: `/products/${slug}/front.webp`,
-  back: `/products/${slug}/back.webp`,
-  flatCard: `/products/${slug}/flat-card.webp`,
-  frontCard: `/products/${slug}/front-card.webp`,
+  flat: `${GCS_BASE}/${slug}/flat.webp`,
+  closeup: `${GCS_BASE}/${slug}/closeup.webp`,
+  front: `${GCS_BASE}/${slug}/front.webp`,
+  back: `${GCS_BASE}/${slug}/back.webp`,
+  flatCard: `${GCS_BASE}/${slug}/flat-card.webp`,
+  frontCard: `${GCS_BASE}/${slug}/front-card.webp`,
 });
 
 // Products are ordered in two blocks: neutral colorways (sand/white/black/grey/acid

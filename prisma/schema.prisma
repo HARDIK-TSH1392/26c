@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 // ---------- NextAuth required models ----------
@@ -90,7 +90,9 @@ model Address {
 }
 
 // status flow: created -> paid -> processing -> shipped -> delivered
-//              (paid can also go straight to cancelled)
+//              (paid can also go straight to cancelled; created -> failed if
+//              the Razorpay webhook reports payment.failed before any
+//              successful payment came through)
 model Order {
   id        String   @id @default(cuid())
   userId    String?

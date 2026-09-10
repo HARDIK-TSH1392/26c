@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { getRazorpay } from "@/lib/razorpay";
 import { prisma } from "@/lib/prisma";
 import { products } from "@/data/products";
+import { isGreenLeavesSaleActive, getSalePrice } from "@/lib/green-leaves-sale";
 
 type CartLineInput = { slug: string; size: string; qty: number };
 type CustomerInput = {
@@ -89,6 +90,10 @@ export async function POST(req: Request) {
     price: number;
   }[] = [];
 
+  // Independently verified server-side, using the server's own clock — never
+  // trust anything the client claims about the sale being active.
+  const saleActive = isGreenLeavesSaleActive();
+
   const outOfStock = await prisma.productStatus.findMany({
     where: { slug: { in: lines.map((l) => l.slug) }, inStock: false },
     select: { slug: true },
@@ -119,14 +124,15 @@ export async function POST(req: Request) {
     if (!Number.isInteger(qty) || qty < 1 || qty > 20) {
       return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
     }
-    subtotal += product.price * qty;
+    const unitPrice = saleActive ? getSalePrice(product.mrp) : product.price;
+    subtotal += unitPrice * qty;
     orderItemsData.push({
       productSlug: product.slug,
       productName: product.name,
       colorway: product.colorway,
       size: line.size,
       qty,
-      price: product.price,
+      price: unitPrice,
     });
   }
 

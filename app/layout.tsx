@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
+import { GreenLeavesProvider } from "@/lib/green-leaves-context";
 import AuthProvider from "@/components/AuthProvider";
 import SiteChrome from "@/components/SiteChrome";
 
@@ -19,9 +20,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased">
         <AuthProvider>
-          <CartProvider>
-            <SiteChrome>{children}</SiteChrome>
-          </CartProvider>
+          <GreenLeavesProvider>
+            <CartProvider>
+              <SiteChrome>{children}</SiteChrome>
+            </CartProvider>
+          </GreenLeavesProvider>
         </AuthProvider>
       </body>
     </html>

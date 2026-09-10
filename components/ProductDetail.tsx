@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/lib/cart-context";
+import { useGreenLeavesSale } from "@/lib/green-leaves-context";
+import { SALE_DISCOUNT_PERCENT, getSalePrice } from "@/lib/green-leaves-sale";
+import MushroomDoodle from "@/components/MushroomDoodle";
 
 export default function ProductDetail({
   product,
@@ -22,9 +25,11 @@ export default function ProductDetail({
   const [size, setSize] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const { addLine } = useCart();
+  const { active: saleActive, secondsRemaining } = useGreenLeavesSale();
   const discount = Math.round(
     ((product.mrp - product.price) / product.mrp) * 100
   );
+  const salePrice = getSalePrice(product.mrp);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 grid md:grid-cols-2 gap-10">
@@ -67,19 +72,47 @@ export default function ProductDetail({
         <h1 className="text-2xl font-bold">{product.name}</h1>
         <p className="text-sm text-ink/60 mt-1">{product.colorway}</p>
 
+        {saleActive && (
+          <div className="mt-4 bg-green-700 text-white px-3 py-2 text-xs font-bold uppercase tracking-wide flex items-center justify-between animate-pulse">
+            <span className="flex items-center gap-1.5">
+              <MushroomDoodle seed={2} className="w-5 h-5" />
+              Green Leaves Sale — {SALE_DISCOUNT_PERCENT}% off
+            </span>
+            <span className="font-mono">
+              {Math.floor(secondsRemaining / 60)}:
+              {String(secondsRemaining % 60).padStart(2, "0")}
+            </span>
+          </div>
+        )}
         <div className="flex items-center gap-3 mt-4">
-          <span className="text-2xl font-bold">₹{product.price}</span>
-          <span className="text-base text-ink/40 line-through">
-            ₹{product.mrp}
-          </span>
-          {inStock ? (
-            <span className="text-sm font-semibold text-accent">
-              {discount}% off
-            </span>
+          {saleActive ? (
+            <>
+              <span className="text-2xl font-bold text-green-700">
+                ₹{salePrice}
+              </span>
+              <span className="text-base text-ink/40 line-through">
+                ₹{product.mrp}
+              </span>
+              <span className="text-sm font-semibold text-green-700">
+                {SALE_DISCOUNT_PERCENT}% off
+              </span>
+            </>
           ) : (
-            <span className="text-sm font-semibold text-ink/50">
-              Out of Stock
-            </span>
+            <>
+              <span className="text-2xl font-bold">₹{product.price}</span>
+              <span className="text-base text-ink/40 line-through">
+                ₹{product.mrp}
+              </span>
+              {inStock ? (
+                <span className="text-sm font-semibold text-accent">
+                  {discount}% off
+                </span>
+              ) : (
+                <span className="text-sm font-semibold text-ink/50">
+                  Out of Stock
+                </span>
+              )}
+            </>
           )}
         </div>
         <p className="text-xs text-ink/50 mt-1">Inclusive of all taxes</p>

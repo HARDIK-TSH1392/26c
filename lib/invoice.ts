@@ -26,18 +26,31 @@ export type InvoiceData = {
   gstin?: string | null;
 };
 
+// Registered seller details — update GSTIN once registration is complete.
+const SELLER = {
+  legalName: "NH TECH PRIVATE LIMITED",
+  brandName: "26c",
+  cin: "U62091DC2026PTC468772",
+  address: "A 9, 3rd Floor, Block A, Kirti Nagar, Ramesh Nagar",
+  city: "New Delhi, West Delhi",
+  pincode: "110015",
+  state: "Delhi",
+  gstin: null as string | null,
+};
+
 const INK = rgb(0.08, 0.08, 0.08);
 const GREY = rgb(0.45, 0.45, 0.45);
 const LINE = rgb(0.85, 0.83, 0.8);
+const PAGE_W = 595.28;
 
 export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
-  const page = doc.addPage([595.28, 841.89]); // A4
+  const page = doc.addPage([PAGE_W, 841.89]); // A4
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
 
   const margin = 50;
-  let y = 800;
+  let y = 792;
 
   const text = (
     str: string,
@@ -54,22 +67,37 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array>
     });
   };
 
-  // header
-  text("26c", margin, y, { size: 26, f: bold });
-  text("TAX INVOICE", 595.28 - margin - 110, y, { size: 14, f: bold });
-  y -= 18;
-  text("Graphic Tees", margin, y, { size: 10, color: GREY });
-  if (data.gstin) {
-    text(`GSTIN: ${data.gstin}`, 595.28 - margin - 150, y, { size: 9, color: GREY });
-  }
-  y -= 40;
+  const hr = () => {
+    page.drawLine({
+      start: { x: margin, y },
+      end: { x: PAGE_W - margin, y },
+      thickness: 1,
+      color: LINE,
+    });
+  };
 
-  page.drawLine({
-    start: { x: margin, y },
-    end: { x: 595.28 - margin, y },
-    thickness: 1,
-    color: LINE,
+  const gstin = data.gstin ?? SELLER.gstin;
+
+  // header
+  text(SELLER.brandName, margin, y, { size: 26, f: bold });
+  text("TAX INVOICE", PAGE_W - margin - 110, y, { size: 14, f: bold });
+  y -= 16;
+  text(SELLER.legalName, margin, y, { size: 9, color: GREY });
+  y -= 12;
+  text(SELLER.address, margin, y, { size: 9, color: GREY });
+  y -= 12;
+  text(`${SELLER.city} ${SELLER.pincode}, ${SELLER.state}, India`, margin, y, {
+    size: 9,
+    color: GREY,
   });
+  y -= 12;
+  text(`CIN: ${SELLER.cin}`, margin, y, { size: 9, color: GREY });
+  if (gstin) {
+    text(`GSTIN: ${gstin}`, PAGE_W - margin - 150, y, { size: 9, color: GREY });
+  }
+  y -= 22;
+
+  hr();
   y -= 24;
 
   // invoice meta + ship-to, two columns
@@ -104,12 +132,7 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array>
   text("Price", col.price, y, { size: 9, f: bold });
   text("Total", col.total, y, { size: 9, f: bold });
   y -= 8;
-  page.drawLine({
-    start: { x: margin, y },
-    end: { x: 595.28 - margin, y },
-    thickness: 1,
-    color: LINE,
-  });
+  hr();
   y -= 18;
 
   for (const item of data.items) {
@@ -122,17 +145,22 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array>
   }
 
   y -= 6;
-  page.drawLine({
-    start: { x: margin, y },
-    end: { x: 595.28 - margin, y },
-    thickness: 1,
-    color: LINE,
-  });
+  hr();
   y -= 24;
 
   text("Subtotal", col.price, y, { size: 10, f: bold });
   text(`Rs ${data.subtotal}`, col.total, y, { size: 10, f: bold });
-  y -= 50;
+  y -= 14;
+
+  if (!gstin) {
+    text(
+      "GST not applicable — seller not yet GST registered.",
+      col.price - 150,
+      y,
+      { size: 8, color: GREY }
+    );
+  }
+  y -= 40;
 
   text(
     "Estimated delivery: 10-12 business days.",
@@ -146,6 +174,16 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array>
     size: 10,
     f: bold,
   });
+  y -= 30;
+
+  hr();
+  y -= 16;
+  text(
+    `${SELLER.legalName} · CIN ${SELLER.cin} · ${SELLER.address}, ${SELLER.city} ${SELLER.pincode}`,
+    margin,
+    y,
+    { size: 7, color: GREY }
+  );
 
   return doc.save();
 }

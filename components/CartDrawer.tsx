@@ -6,7 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import { products } from "@/data/products";
 
 export default function CartDrawer() {
-  const { isOpen, closeCart, lines, removeLine, setQty, subtotal } =
+  const { isOpen, closeCart, lines, removeLine, setQty, subtotal, unitPrice } =
     useCart();
 
   return (
@@ -82,7 +82,7 @@ export default function CartDrawer() {
                       </button>
                     </div>
                     <span className="text-sm font-semibold">
-                      ₹{product.price * line.qty}
+                      ₹{unitPrice(line.slug) * line.qty}
                     </span>
                   </div>
                 </div>

@@ -1,9 +1,20 @@
 import Image from "next/image";
+import Link from "next/link";
+import LeafDoodle from "@/components/LeafDoodle";
+import MushroomDoodle from "@/components/MushroomDoodle";
 
 export default function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line bg-ink text-paper">
-      <div className="mx-auto max-w-7xl px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-10 text-sm">
+    <footer className="relative mt-24 border-t border-line bg-gradient-to-b from-ink via-ink to-green-950/70 text-paper overflow-hidden">
+      <LeafDoodle
+        className="absolute -top-3 right-6 w-16 h-16 text-green-600/10 rotate-12 pointer-events-none"
+      />
+      <MushroomDoodle
+        seed={9}
+        className="absolute bottom-10 left-4 w-10 h-10 text-green-600/10 pointer-events-none"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-10 text-sm">
         <div className="col-span-2 md:col-span-1">
           <div className="relative w-24 h-20 mb-3">
             <Image
@@ -19,37 +30,72 @@ export default function SiteFooter() {
           </p>
         </div>
         <div>
-          <div className="uppercase tracking-wide text-xs text-paper/50 mb-3">
+          <Link
+            href="/"
+            className="block uppercase tracking-wide text-xs text-paper/50 mb-3 hover:text-paper"
+          >
             Shop
-          </div>
+          </Link>
           <ul className="space-y-2 text-paper/80">
-            <li>All Tees</li>
-            <li>New Drops</li>
-            <li>Bestsellers</li>
+            <li>
+              <Link href="/" className="hover:text-paper">
+                All Tees
+              </Link>
+            </li>
+            <li>
+              <Link href="/new-drops" className="hover:text-paper">
+                New Drops
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
-          <div className="uppercase tracking-wide text-xs text-paper/50 mb-3">
+          <Link
+            href="/help"
+            className="block uppercase tracking-wide text-xs text-paper/50 mb-3 hover:text-paper"
+          >
             Help
-          </div>
+          </Link>
           <ul className="space-y-2 text-paper/80">
-            <li>Size Guide</li>
-            <li>Shipping &amp; Returns</li>
-            <li>Track Order</li>
+            <li>
+              <Link href="/size-guide" className="hover:text-paper">
+                Size Guide
+              </Link>
+            </li>
+            <li>
+              <Link href="/account/orders" className="hover:text-paper">
+                Track Order
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
-          <div className="uppercase tracking-wide text-xs text-paper/50 mb-3">
+          <Link
+            href="/about"
+            className="block uppercase tracking-wide text-xs text-paper/50 mb-3 hover:text-paper"
+          >
             Company
-          </div>
+          </Link>
           <ul className="space-y-2 text-paper/80">
-            <li>About 26c</li>
-            <li>Contact</li>
+            <li>
+              <Link href="/about" className="hover:text-paper">
+                About 26c
+              </Link>
+            </li>
+            <li>
+              <a href="mailto:hardik@nhtech.in" className="hover:text-paper">
+                hardik@nhtech.in
+              </a>
+            </li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-paper/10 text-center text-xs text-paper/40 py-5">
+      <div className="relative border-t border-paper/10 text-center text-xs text-paper/40 py-5 group cursor-default">
         © {new Date().getFullYear()} 26c. All rights reserved.
+        <span className="inline-flex items-center gap-1 ml-2 align-middle opacity-0 group-hover:opacity-60 transition-opacity duration-700">
+          <LeafDoodle className="w-3 h-3 text-green-500" />
+          4:20
+        </span>
       </div>
     </footer>
   );

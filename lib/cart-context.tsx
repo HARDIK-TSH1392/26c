@@ -8,6 +8,8 @@ import {
   useState,
 } from "react";
 import { products } from "@/data/products";
+import { useGreenLeavesSale } from "@/lib/green-leaves-context";
+import { getSalePrice } from "@/lib/green-leaves-sale";
 
 export type CartLine = {
   slug: string;
@@ -26,6 +28,7 @@ type CartContextValue = {
   clearCart: () => void;
   count: number;
   subtotal: number;
+  unitPrice: (slug: string) => number;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -83,14 +86,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => setLines([]);
 
+  const { active: saleActive } = useGreenLeavesSale();
+
+  const unitPrice = (slug: string) => {
+    const product = products.find((p) => p.slug === slug);
+    if (!product) return 0;
+    return saleActive ? getSalePrice(product.mrp) : product.price;
+  };
+
   const count = useMemo(() => lines.reduce((n, l) => n + l.qty, 0), [lines]);
   const subtotal = useMemo(
-    () =>
-      lines.reduce((sum, l) => {
-        const product = products.find((p) => p.slug === l.slug);
-        return sum + (product ? product.price * l.qty : 0);
-      }, 0),
-    [lines]
+    () => lines.reduce((sum, l) => sum + unitPrice(l.slug) * l.qty, 0),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [lines, saleActive]
   );
 
   return (
@@ -106,6 +114,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         count,
         subtotal,
+        unitPrice,
       }}
     >
       {children}

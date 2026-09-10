@@ -51,7 +51,7 @@ type SavedAddress = {
 };
 
 export default function CheckoutPage() {
-  const { lines, subtotal, clearCart } = useCart();
+  const { lines, subtotal, clearCart, unitPrice } = useCart();
   const { data: session, status: sessionStatus } = useSession();
 
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
@@ -79,17 +79,6 @@ export default function CheckoutPage() {
         else setUseManualForm(true);
       });
   }, [sessionStatus]);
-
-  const orderText = lines
-    .map((l) => {
-      const p = products.find((pr) => pr.slug === l.slug);
-      return p ? `${p.name} (${p.colorway}, Size ${l.size}) x${l.qty}` : "";
-    })
-    .join("%0A");
-
-  const waLink = `https://wa.me/?text=${encodeURIComponent(
-    "Hi 26c, I'd like to order:\n"
-  )}${orderText}%0A%0ASubtotal: ₹${subtotal}`;
 
   const updateField = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement>
@@ -273,7 +262,7 @@ export default function CheckoutPage() {
                 </p>
               </div>
               <div className="text-sm font-semibold">
-                ₹{product.price * line.qty}
+                ₹{unitPrice(line.slug) * line.qty}
               </div>
             </div>
           );
@@ -402,17 +391,6 @@ export default function CheckoutPage() {
       >
         {loading ? "Processing…" : `Pay ₹${subtotal} with Razorpay`}
       </button>
-
-      <div className="text-center mt-4">
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs underline text-ink/50"
-        >
-          Prefer to order via WhatsApp instead?
-        </a>
-      </div>
     </main>
   );
 }
