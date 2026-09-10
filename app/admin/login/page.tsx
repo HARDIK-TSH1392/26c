@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
@@ -9,14 +9,6 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/admin/setup")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.needsSetup) router.replace("/admin/setup");
-      });
-  }, [router]);
 
   const submit = async () => {
     setError(null);
