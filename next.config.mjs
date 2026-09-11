@@ -1,7 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  serverExternalPackages: ["pg"],
+  // geoip-lite reads its .dat files via __dirname at runtime — webpack
+  // bundling breaks that path resolution, so it has to stay a normal
+  // require() from node_modules instead of being bundled, same as pg.
+  serverExternalPackages: ["pg", "geoip-lite"],
+  // Next's standalone-output file tracer only follows static require()/
+  // import calls — it won't see geoip-lite's runtime fs.readFileSync() of
+  // its .dat data files, so they'd otherwise be silently missing from the
+  // Docker image (works locally with the full node_modules, breaks once
+  // deployed with the pruned standalone output).
+  outputFileTracingIncludes: {
+    "/api/geo": ["./node_modules/geoip-lite/data/**"],
+  },
   async headers() {
     return [
       {
