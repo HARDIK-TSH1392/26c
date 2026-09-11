@@ -5,9 +5,7 @@ import { ADMIN_COOKIE } from "@/lib/admin-auth";
 
 const PUBLIC_ADMIN_PATHS = [
   "/admin/login",
-  "/admin/setup",
   "/api/admin/login",
-  "/api/admin/setup",
   "/api/admin/logout",
 ];
 
