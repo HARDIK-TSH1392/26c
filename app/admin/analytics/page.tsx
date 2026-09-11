@@ -32,6 +32,8 @@ export default function AdminAnalyticsPage() {
           title="PostHog Analytics"
           className="w-full h-full"
           style={{ border: 0 }}
+          allowFullScreen
+          sandbox="allow-scripts allow-same-origin allow-popups"
         />
       </div>
     </div>
