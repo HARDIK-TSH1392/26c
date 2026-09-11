@@ -1,9 +1,9 @@
-FROM node:24-alpine AS deps
+FROM mirror.gcr.io/library/node:24-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM node:24-alpine AS builder
+FROM mirror.gcr.io/library/node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -17,7 +17,7 @@ ENV NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST
 RUN npx prisma generate
 RUN npm run build
 
-FROM node:24-alpine AS runner
+FROM mirror.gcr.io/library/node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
