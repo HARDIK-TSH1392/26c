@@ -8,6 +8,9 @@
 # env files (never commit secrets)
 .env*.local
 
+# Claude Code session-internal files (not part of the project)
+.claude/scheduled_tasks.lock
+
 # misc
 .DS_Store
 *.pem
