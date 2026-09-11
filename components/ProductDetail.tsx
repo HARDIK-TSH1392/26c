@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/lib/cart-context";
@@ -122,9 +123,13 @@ export default function ProductDetail({
             <span className="text-xs font-bold uppercase tracking-wide">
               Select Size
             </span>
-            <button className="text-xs underline text-ink/60">
+            <Link
+              href="/size-guide"
+              target="_blank"
+              className="text-xs underline text-ink/60"
+            >
               Size Guide
-            </button>
+            </Link>
           </div>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
