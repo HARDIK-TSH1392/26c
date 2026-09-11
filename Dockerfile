@@ -7,6 +7,13 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time, not
+# read at container runtime — they have to be passed as build args here.
+# Not secrets (client-exposed by design, like a GA tracking ID).
+ARG NEXT_PUBLIC_POSTHOG_KEY
+ARG NEXT_PUBLIC_POSTHOG_HOST
+ENV NEXT_PUBLIC_POSTHOG_KEY=$NEXT_PUBLIC_POSTHOG_KEY
+ENV NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST
 RUN npx prisma generate
 RUN npm run build
 
