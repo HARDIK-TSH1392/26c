@@ -2,6 +2,14 @@
 const nextConfig = {
   output: "standalone",
   serverExternalPackages: ["pg"],
+  async headers() {
+    return [
+      {
+        source: "/:path((?:checkout|account|admin).*)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

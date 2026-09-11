@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { upcomingDesigns } from "@/data/upcoming";
 import ComingSoonCard from "@/components/ComingSoonCard";
+
+export const metadata: Metadata = {
+  title: "New Drops",
+  description:
+    "Design concepts 26c is deciding between for the next drop — hand-drawn graphic tees, not purchasable yet.",
+  alternates: { canonical: "/new-drops" },
+};
 
 export default function NewDropsPage() {
   return (
