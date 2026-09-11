@@ -10,8 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${SITE_URL}/help`, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE_URL}/size-guide`, changeFrequency: "monthly", priority: 0.3 },
-    { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.1 },
-    { url: `${SITE_URL}/terms`, changeFrequency: "yearly", priority: 0.1 },
+    // privacy/terms are intentionally excluded — noindexed as thin
+    // boilerplate content, so they shouldn't be in the sitemap either.
   ];
 
   const productPages: MetadataRoute.Sitemap = products.map((p) => ({

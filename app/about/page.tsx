@@ -1,5 +1,8 @@
 export const metadata = {
-  title: "About 26c",
+  title: "About",
+  description:
+    "26c is a small graphic tee label — hand-drawn prints, oversized fits, printed in small batches. Run by NH Tech Private Limited.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

@@ -1,5 +1,7 @@
 export const metadata = {
-  title: "Privacy Policy — 26c",
+  title: "Privacy Policy",
+  alternates: { canonical: "/privacy" },
+  robots: { index: false, follow: true },
 };
 
 export default function PrivacyPolicyPage() {

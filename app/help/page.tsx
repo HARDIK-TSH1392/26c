@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Help — 26c",
+  title: "Help",
+  description: "Size guide, order tracking, delivery times, and how to reach 26c.",
+  alternates: { canonical: "/help" },
 };
 
 export default function HelpPage() {

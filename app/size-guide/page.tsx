@@ -1,5 +1,8 @@
 export const metadata = {
-  title: "Size Guide — 26c",
+  title: "Size Guide",
+  description:
+    "26c size chart — chest and length measurements for S to XXL, plus how to measure yourself.",
+  alternates: { canonical: "/size-guide" },
 };
 
 const SIZES = [

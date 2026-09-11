@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/data/products";
+import { useGreenLeavesSale } from "@/lib/green-leaves-context";
+import { useCurrency } from "@/lib/currency-context";
+import { usdPrice, usdSalePrice } from "@/lib/currency";
 
 declare global {
   interface Window {
@@ -53,6 +56,19 @@ type SavedAddress = {
 export default function CheckoutPage() {
   const { lines, subtotal, clearCart, unitPrice } = useCart();
   const { data: session, status: sessionStatus } = useSession();
+  const { active: saleActive } = useGreenLeavesSale();
+  const { isIndia } = useCurrency();
+
+  // The real, binding charge is always INR (Razorpay only processes INR
+  // here) — this is only a "~$X" reference alongside it for a non-India
+  // browser, not a currency swap of the actual amount being charged.
+  const usdUnit = (inrPrice: number, inrMrp: number) =>
+    saleActive ? usdSalePrice(inrPrice, inrMrp) : usdPrice(inrPrice);
+  const usdSubtotal = lines.reduce((sum, l) => {
+    const p = products.find((prod) => prod.slug === l.slug);
+    if (!p) return sum;
+    return sum + usdUnit(p.price, p.mrp) * l.qty;
+  }, 0);
 
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
@@ -261,17 +277,29 @@ export default function CheckoutPage() {
                   {product.colorway} · Size {line.size} · Qty {line.qty}
                 </p>
               </div>
-              <div className="text-sm font-semibold">
+              <div className="text-sm font-semibold text-right">
                 ₹{unitPrice(line.slug) * line.qty}
+                {!isIndia && product && (
+                  <div className="text-xs text-ink/40 font-normal">
+                    ~${usdUnit(product.price, product.mrp) * line.qty}
+                  </div>
+                )}
               </div>
             </div>
           );
         })}
       </div>
 
-      <div className="flex justify-between mb-2 text-base font-bold">
+      <div className="flex justify-between mb-2 text-base font-bold items-baseline">
         <span>Subtotal</span>
-        <span>₹{subtotal}</span>
+        <span>
+          ₹{subtotal}
+          {!isIndia && (
+            <span className="text-xs text-ink/40 font-normal ml-1.5">
+              (~${usdSubtotal})
+            </span>
+          )}
+        </span>
       </div>
       <p className="text-xs text-ink/50 mb-8">
         Estimated delivery: 10-12 business days

@@ -4,10 +4,31 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/data/products";
+import { useGreenLeavesSale } from "@/lib/green-leaves-context";
+import { useCurrency } from "@/lib/currency-context";
+import { money, usdPrice, usdSalePrice } from "@/lib/currency";
 
 export default function CartDrawer() {
   const { isOpen, closeCart, lines, removeLine, setQty, subtotal, unitPrice } =
     useCart();
+  const { active: saleActive } = useGreenLeavesSale();
+  const { isIndia } = useCurrency();
+
+  // Real checkout math stays in INR (unitPrice/subtotal from cart-context) —
+  // this only swaps what's *displayed* for a non-India browser.
+  const displayUnit = (slug: string, inrPrice: number, inrMrp: number) =>
+    isIndia
+      ? unitPrice(slug)
+      : saleActive
+      ? usdSalePrice(inrPrice, inrMrp)
+      : usdPrice(inrPrice);
+  const displaySubtotal = isIndia
+    ? subtotal
+    : lines.reduce((sum, l) => {
+        const p = products.find((prod) => prod.slug === l.slug);
+        if (!p) return sum;
+        return sum + displayUnit(l.slug, p.price, p.mrp) * l.qty;
+      }, 0);
 
   return (
     <>
@@ -82,7 +103,10 @@ export default function CartDrawer() {
                       </button>
                     </div>
                     <span className="text-sm font-semibold">
-                      ₹{unitPrice(line.slug) * line.qty}
+                      {money(
+                        displayUnit(line.slug, product.price, product.mrp) * line.qty,
+                        isIndia
+                      )}
                     </span>
                   </div>
                 </div>
@@ -94,7 +118,7 @@ export default function CartDrawer() {
         <div className="border-t border-line px-5 py-5 space-y-3">
           <div className="flex justify-between text-sm font-semibold">
             <span>Subtotal</span>
-            <span>₹{subtotal}</span>
+            <span>{money(displaySubtotal, isIndia)}</span>
           </div>
           <Link
             href="/checkout"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
+import { CurrencyProvider } from "@/lib/currency-context";
 import { GreenLeavesProvider } from "@/lib/green-leaves-context";
 import AuthProvider from "@/components/AuthProvider";
 import SiteChrome from "@/components/SiteChrome";
@@ -87,11 +88,13 @@ export default function RootLayout({
         <PostHogProvider>
           <AuthProvider>
             <PostHogIdentify />
-            <GreenLeavesProvider>
-              <CartProvider>
-                <SiteChrome>{children}</SiteChrome>
-              </CartProvider>
-            </GreenLeavesProvider>
+            <CurrencyProvider>
+              <GreenLeavesProvider>
+                <CartProvider>
+                  <SiteChrome>{children}</SiteChrome>
+                </CartProvider>
+              </GreenLeavesProvider>
+            </CurrencyProvider>
           </AuthProvider>
         </PostHogProvider>
       </body>

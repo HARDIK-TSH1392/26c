@@ -6,6 +6,8 @@ import { useState } from "react";
 import type { Product } from "@/data/products";
 import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { SALE_DISCOUNT_PERCENT, getSalePrice } from "@/lib/green-leaves-sale";
+import { useCurrency } from "@/lib/currency-context";
+import { money, usdPrice, usdMrp, usdSalePrice } from "@/lib/currency";
 import MushroomDoodle from "@/components/MushroomDoodle";
 
 export default function ProductCard({
@@ -17,10 +19,16 @@ export default function ProductCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const { active: saleActive } = useGreenLeavesSale();
+  const { isIndia } = useCurrency();
   const discount = Math.round(
     ((product.mrp - product.price) / product.mrp) * 100
   );
   const salePrice = getSalePrice(product.mrp);
+  const displayPrice = isIndia ? product.price : usdPrice(product.price);
+  const displayMrp = isIndia ? product.mrp : usdMrp(product.price, product.mrp);
+  const displaySalePrice = isIndia
+    ? salePrice
+    : usdSalePrice(product.price, product.mrp);
 
   return (
     <Link
@@ -86,17 +94,19 @@ export default function ProductCard({
           {saleActive ? (
             <>
               <span className="text-sm font-bold text-green-700">
-                ₹{salePrice}
+                {money(displaySalePrice, isIndia)}
               </span>
               <span className="text-xs text-ink/40 line-through">
-                ₹{product.mrp}
+                {money(displayMrp, isIndia)}
               </span>
             </>
           ) : (
             <>
-              <span className="text-sm font-bold">₹{product.price}</span>
+              <span className="text-sm font-bold">
+                {money(displayPrice, isIndia)}
+              </span>
               <span className="text-xs text-ink/40 line-through">
-                ₹{product.mrp}
+                {money(displayMrp, isIndia)}
               </span>
             </>
           )}
