@@ -4,6 +4,8 @@ import { CartProvider } from "@/lib/cart-context";
 import { GreenLeavesProvider } from "@/lib/green-leaves-context";
 import AuthProvider from "@/components/AuthProvider";
 import SiteChrome from "@/components/SiteChrome";
+import PostHogProvider from "@/components/PostHogProvider";
+import PostHogIdentify from "@/components/PostHogIdentify";
 
 export const metadata: Metadata = {
   title: "26c — Graphic Tees",
@@ -19,13 +21,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <AuthProvider>
-          <GreenLeavesProvider>
-            <CartProvider>
-              <SiteChrome>{children}</SiteChrome>
-            </CartProvider>
-          </GreenLeavesProvider>
-        </AuthProvider>
+        <PostHogProvider>
+          <AuthProvider>
+            <PostHogIdentify />
+            <GreenLeavesProvider>
+              <CartProvider>
+                <SiteChrome>{children}</SiteChrome>
+              </CartProvider>
+            </GreenLeavesProvider>
+          </AuthProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
