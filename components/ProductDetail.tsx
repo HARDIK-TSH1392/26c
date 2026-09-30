@@ -9,6 +9,7 @@ import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { SALE_DISCOUNT_PERCENT, getSalePrice } from "@/lib/green-leaves-sale";
 import { useCurrency } from "@/lib/currency-context";
 import { money, usdPrice, usdMrp, usdSalePrice } from "@/lib/currency";
+import { sizeLabel } from "@/lib/sizes";
 import MushroomDoodle from "@/components/MushroomDoodle";
 
 export default function ProductDetail({
@@ -30,9 +31,6 @@ export default function ProductDetail({
   const { addLine } = useCart();
   const { active: saleActive, secondsRemaining } = useGreenLeavesSale();
   const { isIndia } = useCurrency();
-  const discount = Math.round(
-    ((product.mrp - product.price) / product.mrp) * 100
-  );
   const salePrice = getSalePrice(product.mrp);
   const displayPrice = isIndia ? product.price : usdPrice(product.price);
   const displayMrp = isIndia ? product.mrp : usdMrp(product.price, product.mrp);
@@ -111,14 +109,7 @@ export default function ProductDetail({
               <span className="text-2xl font-bold">
                 {money(displayPrice, isIndia)}
               </span>
-              <span className="text-base text-ink/40 line-through">
-                {money(displayMrp, isIndia)}
-              </span>
-              {inStock ? (
-                <span className="text-sm font-semibold text-accent">
-                  {discount}% off
-                </span>
-              ) : (
+              {!inStock && (
                 <span className="text-sm font-semibold text-ink/50">
                   Out of Stock
                 </span>
@@ -145,17 +136,18 @@ export default function ProductDetail({
             {product.sizes.map((s) => (
               <button
                 key={s}
+                title={s}
                 onClick={() => {
                   setSize(s);
                   setError(false);
                 }}
-                className={`w-12 h-11 border text-sm font-medium transition-colors ${
+                className={`h-11 px-3 border text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
                   size === s
                     ? "bg-ink text-paper border-ink"
                     : "border-line hover:border-ink"
                 }`}
               >
-                {s}
+                {sizeLabel(s)}
               </button>
             ))}
           </div>

@@ -20,9 +20,6 @@ export default function ProductCard({
   const [hovered, setHovered] = useState(false);
   const { active: saleActive } = useGreenLeavesSale();
   const { isIndia } = useCurrency();
-  const discount = Math.round(
-    ((product.mrp - product.price) / product.mrp) * 100
-  );
   const salePrice = getSalePrice(product.mrp);
   const displayPrice = isIndia ? product.price : usdPrice(product.price);
   const displayMrp = isIndia ? product.mrp : usdMrp(product.price, product.mrp);
@@ -42,11 +39,6 @@ export default function ProductCard({
           saleActive ? "border-green-700 ring-2 ring-green-700" : "border-line"
         }`}
       >
-        {product.badge && !saleActive && (
-          <span className="absolute top-2 left-2 z-10 bg-ink text-paper text-[10px] font-bold uppercase tracking-wide px-2 py-1">
-            {product.badge}
-          </span>
-        )}
         {saleActive && (
           <span className="absolute top-2 left-2 z-10 bg-green-700 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-1 animate-pulse flex items-center gap-1">
             <MushroomDoodle seed={1} className="w-4 h-4" />
@@ -58,13 +50,11 @@ export default function ProductCard({
             OUT OF STOCK
           </span>
         ) : (
-          <span
-            className={`absolute top-2 right-2 z-10 text-white text-[10px] font-bold px-2 py-1 ${
-              saleActive ? "bg-green-700" : "bg-accent"
-            }`}
-          >
-            {saleActive ? `${SALE_DISCOUNT_PERCENT}% OFF` : `${discount}% OFF`}
-          </span>
+          saleActive && (
+            <span className="absolute top-2 right-2 z-10 text-white text-[10px] font-bold px-2 py-1 bg-green-700">
+              {SALE_DISCOUNT_PERCENT}% OFF
+            </span>
+          )
         )}
         <Image
           src={product.images.frontCard}
@@ -101,14 +91,9 @@ export default function ProductCard({
               </span>
             </>
           ) : (
-            <>
-              <span className="text-sm font-bold">
-                {money(displayPrice, isIndia)}
-              </span>
-              <span className="text-xs text-ink/40 line-through">
-                {money(displayMrp, isIndia)}
-              </span>
-            </>
+            <span className="text-sm font-bold">
+              {money(displayPrice, isIndia)}
+            </span>
           )}
         </div>
       </div>

@@ -22,18 +22,6 @@ export default function SiteHeader() {
             />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wide">
-            <Link href="/" className="hover:text-accent transition-colors">
-              All Tees
-            </Link>
-            <Link
-              href="/new-drops"
-              className="hover:text-accent transition-colors"
-            >
-              New Drops
-            </Link>
-          </nav>
-
           <div className="flex items-center gap-5">
             <AccountMenu />
             <button

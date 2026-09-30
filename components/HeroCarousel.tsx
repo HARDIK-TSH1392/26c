@@ -27,6 +27,8 @@ export default function HeroCarousel() {
     return () => clearInterval(id);
   }, []);
 
+  const goTo = (i: number) => setActive((i + SLIDES.length) % SLIDES.length);
+
   return (
     <>
       {SLIDES.map((slide, i) => (
@@ -42,6 +44,25 @@ export default function HeroCarousel() {
           }`}
         />
       ))}
+
+      <button
+        aria-label="Previous slide"
+        onClick={() => goTo(active - 1)}
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-ink/30 hover:bg-ink/50 text-paper transition-colors"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button
+        aria-label="Next slide"
+        onClick={() => goTo(active + 1)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-ink/30 hover:bg-ink/50 text-paper transition-colors"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
 
       <div className="absolute bottom-5 left-6 z-10 flex gap-1.5">
         {SLIDES.map((slide, i) => (

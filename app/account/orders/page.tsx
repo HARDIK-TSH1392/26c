@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
+import { sizeLabel } from "@/lib/sizes";
 
 type OrderItem = {
   id: string;
@@ -93,8 +94,8 @@ export default function OrdersPage() {
               {order.items.map((item) => (
                 <div key={item.id} className="py-2 flex justify-between">
                   <span>
-                    {item.productName} — {item.colorway} · Size {item.size} ×{" "}
-                    {item.qty}
+                    {item.productName} — {item.colorway} ·{" "}
+                    {sizeLabel(item.size)} × {item.qty}
                   </span>
                   <span>₹{item.price * item.qty}</span>
                 </div>

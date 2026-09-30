@@ -48,8 +48,8 @@ export default function HelpPage() {
           </h2>
           <p className="text-ink/60">
             Email us at{" "}
-            <a href="mailto:hardik@nhtech.in" className="underline">
-              hardik@nhtech.in
+            <a href="mailto:26c@nhtech.in" className="underline">
+              26c@nhtech.in
             </a>{" "}
             and we&apos;ll get back to you.
           </p>

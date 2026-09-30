@@ -14,7 +14,7 @@ export default function SiteFooter() {
         className="absolute bottom-10 left-4 w-10 h-10 text-green-600/10 pointer-events-none"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-10 text-sm">
+      <div className="relative mx-auto max-w-7xl px-6 py-14 grid grid-cols-2 md:grid-cols-3 gap-10 text-sm">
         <div className="col-span-2 md:col-span-1">
           <div className="relative w-24 h-20 mb-3">
             <Image
@@ -28,26 +28,6 @@ export default function SiteFooter() {
             Hand-drawn graphic tees. Oversized fits, 100% cotton, printed in
             small batches.
           </p>
-        </div>
-        <div>
-          <Link
-            href="/"
-            className="block uppercase tracking-wide text-xs text-paper/50 mb-3 hover:text-paper"
-          >
-            Shop
-          </Link>
-          <ul className="space-y-2 text-paper/80">
-            <li>
-              <Link href="/" className="hover:text-paper">
-                All Tees
-              </Link>
-            </li>
-            <li>
-              <Link href="/new-drops" className="hover:text-paper">
-                New Drops
-              </Link>
-            </li>
-          </ul>
         </div>
         <div>
           <Link
@@ -83,8 +63,8 @@ export default function SiteFooter() {
               </Link>
             </li>
             <li>
-              <a href="mailto:hardik@nhtech.in" className="hover:text-paper">
-                hardik@nhtech.in
+              <a href="mailto:26c@nhtech.in" className="hover:text-paper">
+                26c@nhtech.in
               </a>
             </li>
           </ul>

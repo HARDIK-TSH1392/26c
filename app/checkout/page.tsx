@@ -10,6 +10,7 @@ import { products } from "@/data/products";
 import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { useCurrency } from "@/lib/currency-context";
 import { usdPrice, usdSalePrice } from "@/lib/currency";
+import { sizeLabel } from "@/lib/sizes";
 
 declare global {
   interface Window {
@@ -274,7 +275,7 @@ export default function CheckoutPage() {
               <div className="flex-1 text-sm">
                 <p className="font-medium">{product.name}</p>
                 <p className="text-ink/50">
-                  {product.colorway} · Size {line.size} · Qty {line.qty}
+                  {product.colorway} · {sizeLabel(line.size)} · Qty {line.qty}
                 </p>
               </div>
               <div className="text-sm font-semibold text-right">

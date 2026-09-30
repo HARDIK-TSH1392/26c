@@ -7,6 +7,7 @@ import { products } from "@/data/products";
 import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { useCurrency } from "@/lib/currency-context";
 import { money, usdPrice, usdSalePrice } from "@/lib/currency";
+import { sizeLabel } from "@/lib/sizes";
 
 export default function CartDrawer() {
   const { isOpen, closeCart, lines, removeLine, setQty, subtotal, unitPrice } =
@@ -76,7 +77,7 @@ export default function CartDrawer() {
                     <div>
                       <p className="font-medium">{product.name}</p>
                       <p className="text-ink/50 text-xs">
-                        {product.colorway} · Size {line.size}
+                        {product.colorway} · {sizeLabel(line.size)}
                       </p>
                     </div>
                     <button

@@ -1,3 +1,5 @@
+import { sizeLabel } from "@/lib/sizes";
+
 export const metadata = {
   title: "Size Guide",
   description:
@@ -34,7 +36,10 @@ export default function SizeGuidePage() {
           <tbody>
             {SIZES.map((row) => (
               <tr key={row.size} className="border-b border-line last:border-0">
-                <td className="px-4 py-3 font-medium">{row.size}</td>
+                <td className="px-4 py-3 font-medium">
+                  {sizeLabel(row.size)}{" "}
+                  <span className="text-ink/40">({row.size})</span>
+                </td>
                 <td className="px-4 py-3">{row.chest}</td>
                 <td className="px-4 py-3">{row.length}</td>
               </tr>
@@ -57,8 +62,8 @@ export default function SizeGuidePage() {
 
       <p className="mt-8 text-ink/60">
         Still unsure? Email us at{" "}
-        <a href="mailto:hardik@nhtech.in" className="underline">
-          hardik@nhtech.in
+        <a href="mailto:26c@nhtech.in" className="underline">
+          26c@nhtech.in
         </a>{" "}
         and we&apos;ll help you pick a size.
       </p>
