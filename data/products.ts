@@ -158,7 +158,7 @@ export const products: Product[] = [
   {
     id: "26c-005",
     slug: "melting-monkey-sand",
-    name: "Melting Face Tee",
+    name: "Superboof",
     colorway: "Sand",
     price: 699,
     mrp: 899,
@@ -167,15 +167,14 @@ export const products: Product[] = [
     fit: "Oversized Fit",
     fabric: "230 GSM 100% Cotton",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    description:
-      "A multi-color melting-face illustration in a hazy pastel wash, hand-inked outline over a swirling rainbow backdrop on sand cotton.",
+    description: "Superboof tastes like shit.",
     badge: "New Drop",
     images: img("melting-monkey-sand"),
   },
   {
     id: "26c-006",
     slug: "neon-monkey-black",
-    name: "Neon Trip Tee",
+    name: "Superboof",
     colorway: "Black",
     price: 699,
     mrp: 899,
@@ -184,8 +183,7 @@ export const products: Product[] = [
     fit: "Oversized Fit",
     fabric: "230 GSM 100% Cotton",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    description:
-      "Neon gradient line-art on black cotton, glow-in-the-dark energy without the glow. Bold, graphic, made to be seen.",
+    description: "Superboof tastes like shit.",
     images: img("neon-monkey-black"),
   },
 
