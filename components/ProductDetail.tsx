@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart-context";
 import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { SALE_DISCOUNT_PERCENT, getSalePrice } from "@/lib/green-leaves-sale";
 import { useCurrency } from "@/lib/currency-context";
-import { money, usdPrice, usdMrp, usdSalePrice } from "@/lib/currency";
+import { money, usdPrice, usdSalePrice } from "@/lib/currency";
 import { sizeLabel } from "@/lib/sizes";
 import MushroomDoodle from "@/components/MushroomDoodle";
 
@@ -31,12 +31,9 @@ export default function ProductDetail({
   const { addLine } = useCart();
   const { active: saleActive, secondsRemaining } = useGreenLeavesSale();
   const { isIndia } = useCurrency();
-  const salePrice = getSalePrice(product.mrp);
+  const salePrice = getSalePrice(product.price);
   const displayPrice = isIndia ? product.price : usdPrice(product.price);
-  const displayMrp = isIndia ? product.mrp : usdMrp(product.price, product.mrp);
-  const displaySalePrice = isIndia
-    ? salePrice
-    : usdSalePrice(product.price, product.mrp);
+  const displaySalePrice = isIndia ? salePrice : usdSalePrice(product.price);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 grid md:grid-cols-2 gap-10">
@@ -98,7 +95,7 @@ export default function ProductDetail({
                 {money(displaySalePrice, isIndia)}
               </span>
               <span className="text-base text-ink/40 line-through">
-                {money(displayMrp, isIndia)}
+                {money(displayPrice, isIndia)}
               </span>
               <span className="text-sm font-semibold text-green-700">
                 {SALE_DISCOUNT_PERCENT}% off

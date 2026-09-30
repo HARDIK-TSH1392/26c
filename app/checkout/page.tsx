@@ -63,12 +63,12 @@ export default function CheckoutPage() {
   // The real, binding charge is always INR (Razorpay only processes INR
   // here) — this is only a "~$X" reference alongside it for a non-India
   // browser, not a currency swap of the actual amount being charged.
-  const usdUnit = (inrPrice: number, inrMrp: number) =>
-    saleActive ? usdSalePrice(inrPrice, inrMrp) : usdPrice(inrPrice);
+  const usdUnit = (inrPrice: number) =>
+    saleActive ? usdSalePrice(inrPrice) : usdPrice(inrPrice);
   const usdSubtotal = lines.reduce((sum, l) => {
     const p = products.find((prod) => prod.slug === l.slug);
     if (!p) return sum;
-    return sum + usdUnit(p.price, p.mrp) * l.qty;
+    return sum + usdUnit(p.price) * l.qty;
   }, 0);
 
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
@@ -282,7 +282,7 @@ export default function CheckoutPage() {
                 ₹{unitPrice(line.slug) * line.qty}
                 {!isIndia && product && (
                   <div className="text-xs text-ink/40 font-normal">
-                    ~${usdUnit(product.price, product.mrp) * line.qty}
+                    ~${usdUnit(product.price) * line.qty}
                   </div>
                 )}
               </div>

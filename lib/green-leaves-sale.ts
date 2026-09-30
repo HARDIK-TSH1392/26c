@@ -1,11 +1,13 @@
 // "Green Leaves Sale" — a quiet, unannounced flash sale at 4:20am and 4:20pm
-// IST, for 5 minutes, at 42% off MRP. Timing is evaluated in IST regardless
-// of server/browser locale so it fires at the same real-world moment for
-// everyone. The actual charge is always recomputed server-side at checkout
-// from this same function — the client's clock is only ever used for the
-// visual/marketing display, never trusted for the real price.
+// IST, for 5 minutes, at 20% off the regular selling price (not MRP — the
+// storefront doesn't show/discount off MRP anywhere anymore). Timing is
+// evaluated in IST regardless of server/browser locale so it fires at the
+// same real-world moment for everyone. The actual charge is always
+// recomputed server-side at checkout from this same function — the
+// client's clock is only ever used for the visual/marketing display,
+// never trusted for the real price.
 
-export const SALE_DISCOUNT_PERCENT = 42;
+export const SALE_DISCOUNT_PERCENT = 20;
 export const SALE_HOUR_24 = [4, 16]; // 4:20am and 4:20pm IST
 export const SALE_START_MINUTE = 20;
 export const SALE_END_MINUTE = 25; // exclusive — 5 minute window
@@ -63,6 +65,6 @@ export function secondsRemainingInSale(date: Date = new Date()): number {
   return Math.max(0, 5 * 60 - elapsed);
 }
 
-export function getSalePrice(mrp: number): number {
-  return Math.round(mrp * (1 - SALE_DISCOUNT_PERCENT / 100));
+export function getSalePrice(price: number): number {
+  return Math.round(price * (1 - SALE_DISCOUNT_PERCENT / 100));
 }

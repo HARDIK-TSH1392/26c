@@ -17,18 +17,18 @@ export default function CartDrawer() {
 
   // Real checkout math stays in INR (unitPrice/subtotal from cart-context) —
   // this only swaps what's *displayed* for a non-India browser.
-  const displayUnit = (slug: string, inrPrice: number, inrMrp: number) =>
+  const displayUnit = (slug: string, inrPrice: number) =>
     isIndia
       ? unitPrice(slug)
       : saleActive
-      ? usdSalePrice(inrPrice, inrMrp)
+      ? usdSalePrice(inrPrice)
       : usdPrice(inrPrice);
   const displaySubtotal = isIndia
     ? subtotal
     : lines.reduce((sum, l) => {
         const p = products.find((prod) => prod.slug === l.slug);
         if (!p) return sum;
-        return sum + displayUnit(l.slug, p.price, p.mrp) * l.qty;
+        return sum + displayUnit(l.slug, p.price) * l.qty;
       }, 0);
 
   return (
@@ -105,7 +105,7 @@ export default function CartDrawer() {
                     </div>
                     <span className="text-sm font-semibold">
                       {money(
-                        displayUnit(line.slug, product.price, product.mrp) * line.qty,
+                        displayUnit(line.slug, product.price) * line.qty,
                         isIndia
                       )}
                     </span>

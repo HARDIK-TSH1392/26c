@@ -16,20 +16,10 @@ export function usdPrice(inrPrice: number): number {
   return USD_BASE_PRICE[inrPrice] ?? Math.round(inrPrice / FALLBACK_INR_PER_USD);
 }
 
-// Derives a USD "MRP" that preserves the same %-off relationship as the INR
-// price/mrp pair, so the discount badge (e.g. "20% off") reads the same
-// percentage in both currencies instead of a mismatched one.
-export function usdMrp(inrPrice: number, inrMrp: number): number {
-  const price = usdPrice(inrPrice);
-  if (inrMrp <= inrPrice) return price;
-  const discountFraction = (inrMrp - inrPrice) / inrMrp;
-  return Math.round(price / (1 - discountFraction));
-}
-
-// Green Leaves Sale (42% off) applied to the derived USD MRP — same formula
-// already used for the real INR sale price, just on the USD figure.
-export function usdSalePrice(inrPrice: number, inrMrp: number): number {
-  return Math.round(usdMrp(inrPrice, inrMrp) * (1 - SALE_DISCOUNT_PERCENT / 100));
+// Green Leaves Sale discount applied to the USD price — same %-off used for
+// the real INR sale price, just on the USD figure.
+export function usdSalePrice(inrPrice: number): number {
+  return Math.round(usdPrice(inrPrice) * (1 - SALE_DISCOUNT_PERCENT / 100));
 }
 
 export function money(amount: number, isIndia: boolean): string {

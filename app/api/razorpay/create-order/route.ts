@@ -124,7 +124,7 @@ export async function POST(req: Request) {
     if (!Number.isInteger(qty) || qty < 1 || qty > 20) {
       return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
     }
-    const unitPrice = saleActive ? getSalePrice(product.mrp) : product.price;
+    const unitPrice = saleActive ? getSalePrice(product.price) : product.price;
     subtotal += unitPrice * qty;
     orderItemsData.push({
       productSlug: product.slug,

@@ -7,7 +7,7 @@ import type { Product } from "@/data/products";
 import { useGreenLeavesSale } from "@/lib/green-leaves-context";
 import { SALE_DISCOUNT_PERCENT, getSalePrice } from "@/lib/green-leaves-sale";
 import { useCurrency } from "@/lib/currency-context";
-import { money, usdPrice, usdMrp, usdSalePrice } from "@/lib/currency";
+import { money, usdPrice, usdSalePrice } from "@/lib/currency";
 import MushroomDoodle from "@/components/MushroomDoodle";
 
 export default function ProductCard({
@@ -20,12 +20,9 @@ export default function ProductCard({
   const [hovered, setHovered] = useState(false);
   const { active: saleActive } = useGreenLeavesSale();
   const { isIndia } = useCurrency();
-  const salePrice = getSalePrice(product.mrp);
+  const salePrice = getSalePrice(product.price);
   const displayPrice = isIndia ? product.price : usdPrice(product.price);
-  const displayMrp = isIndia ? product.mrp : usdMrp(product.price, product.mrp);
-  const displaySalePrice = isIndia
-    ? salePrice
-    : usdSalePrice(product.price, product.mrp);
+  const displaySalePrice = isIndia ? salePrice : usdSalePrice(product.price);
 
   return (
     <Link
@@ -87,7 +84,7 @@ export default function ProductCard({
                 {money(displaySalePrice, isIndia)}
               </span>
               <span className="text-xs text-ink/40 line-through">
-                {money(displayMrp, isIndia)}
+                {money(displayPrice, isIndia)}
               </span>
             </>
           ) : (

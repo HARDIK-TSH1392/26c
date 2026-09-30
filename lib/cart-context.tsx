@@ -91,7 +91,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const unitPrice = (slug: string) => {
     const product = products.find((p) => p.slug === slug);
     if (!product) return 0;
-    return saleActive ? getSalePrice(product.mrp) : product.price;
+    return saleActive ? getSalePrice(product.price) : product.price;
   };
 
   const count = useMemo(() => lines.reduce((n, l) => n + l.qty, 0), [lines]);
