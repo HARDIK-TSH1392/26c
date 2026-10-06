@@ -171,10 +171,16 @@ export default function ProductDetail({
           <dl className="grid grid-cols-2 gap-y-2 text-ink/70">
             <dt className="text-ink/50">Fit</dt>
             <dd>{product.fit}</dd>
-            <dt className="text-ink/50">Fabric</dt>
+            <dt className="text-ink/50">
+              {product.printType ? "Fabric" : "Material"}
+            </dt>
             <dd>{product.fabric}</dd>
-            <dt className="text-ink/50">Print</dt>
-            <dd>{product.printType}</dd>
+            {product.printType && (
+              <>
+                <dt className="text-ink/50">Print</dt>
+                <dd>{product.printType}</dd>
+              </>
+            )}
           </dl>
         </div>
       </div>

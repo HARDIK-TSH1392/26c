@@ -6,7 +6,9 @@ export type Product = {
   price: number;
   mrp: number;
   category: string;
-  printType: "Solid Print" | "Multi-Color Print" | "Acid Wash Print";
+  // Optional — only applies to printed apparel. Accessories (sunglasses
+  // etc.) leave this unset and the spec table just skips that row.
+  printType?: "Solid Print" | "Multi-Color Print" | "Acid Wash Print";
   fit: string;
   fabric: string;
   sizes: string[];
@@ -289,6 +291,29 @@ export const products: Product[] = [
       "Superboof tastes like shit.",
     badge: "New Drop",
     images: img("trippy-ape-joint-psychedelic-pastel"),
+  },
+
+  // ---------- Accessories ----------
+  {
+    id: "26c-016",
+    slug: "vice-sunglasses",
+    name: "Vice",
+    colorway: "Silver",
+    price: 1299,
+    mrp: 1299,
+    category: "Sunglasses",
+    fit: "One Size",
+    fabric: "Metal Frame, UV400 Tinted Lenses",
+    sizes: ["One Size"],
+    description: "Vice sees everything. Vice says nothing.",
+    images: {
+      flat: `${GCS_BASE}/vice-sunglasses/studio.webp`,
+      closeup: `${GCS_BASE}/vice-sunglasses/lifestyle.webp`,
+      front: `${GCS_BASE}/vice-sunglasses/studio.webp`,
+      back: `${GCS_BASE}/vice-sunglasses/lifestyle.webp`,
+      flatCard: `${GCS_BASE}/vice-sunglasses/lifestyle.webp`,
+      frontCard: `${GCS_BASE}/vice-sunglasses/studio.webp`,
+    },
   },
 ];
 

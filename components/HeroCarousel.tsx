@@ -4,18 +4,19 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { products } from "@/data/products";
 
-const SLIDES = [
-  ...products.map((p) => ({
+// Newest launches lead the rotation (and get the eager-loaded first slot)
+// rather than sitting wherever they fall in catalog order.
+const SLIDES = [...products]
+  .sort((a, b) => {
+    const aFirst = a.category === "Sunglasses";
+    const bFirst = b.category === "Sunglasses";
+    return aFirst === bFirst ? 0 : aFirst ? -1 : 1;
+  })
+  .map((p) => ({
     src: p.images.front,
     alt: `${p.name} — ${p.colorway}`,
     position: "object-[center_34%]",
-  })),
-  {
-    src: "/hero/vice-teaser.webp",
-    alt: "Vice by 26c — coming soon",
-    position: "object-center",
-  },
-];
+  }));
 
 export default function HeroCarousel() {
   const [active, setActive] = useState(0);

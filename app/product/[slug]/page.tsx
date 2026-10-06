@@ -19,7 +19,7 @@ export async function generateMetadata({
   if (!product) return {};
 
   const title = `${product.name} — ${product.colorway}`;
-  const description = `${product.description} ₹${product.price} (MRP ₹${product.mrp}). ${product.fit}, ${product.fabric}.`;
+  const description = `${product.description} ₹${product.price}. ${product.fit}, ${product.fabric}.`;
   const url = `${SITE_URL}/product/${product.slug}`;
   const image = product.images.frontCard;
 
@@ -81,7 +81,7 @@ export default async function ProductPage({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "All Tees", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Shop", item: `${SITE_URL}/` },
       {
         "@type": "ListItem",
         position: 3,
